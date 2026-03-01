@@ -1,28 +1,31 @@
-const express = require("express") //framework that runs my server
-const mongoose = require("mongoose") //library  to connect to MongoDB and define my data models
-const cors = require("cors") //allows my frontend to make requests to my backend without running into cross-origin issues
-require("dotenv").config() // reads my .env file and makes the variables available in process.env
+// backend/server.js
 
-const app = express()
-app.use(cors()) // allow frontend requests
-app.use(express.json()) // allow the server to read JSON data sent in requests
+import express from 'express'
+import mongoose from 'mongoose'
+import cors from 'cors'
+import dotenv from 'dotenv'
+import productRoutes from './routes/productRoutes.js'
+import messageRoutes from "./routes/messageRoutes.js"
 
-//connect to mongodb then start server 
-mongoose.connect(process.env.MONGO_URI)
-.then(()=> {
-    console.log("mongodb conncted");
+dotenv.config()       // loads your .env file
+const app = express() // creates your server
 
-    //only start server if db connected successfully
-    const PORT = process.env.PORT || 5000
-      app.listen(PORT , ()=> {
-        console.log(`Server running on port ${PORT}`);
-      })
-    })
+// ── Middleware ──
+// These 2 lines run on EVERY request before it hits your routes
+app.use(cors())             // allows React (port 5173) to talk to Express (port 5000)
+app.use(express.json())     // lets Express read JSON from request bodies
 
-    .catch((error)=> {
-        console.error("Failed to connect to MongoDB", error);
-        process.exit(1) // exit with failure code
-    
-    })
-    app.use("/api/products" , require("./routes/products"))
+// ── Routes ──
+// Any request to /api/products or messages gets handed to productRoutes/messageRoutes
+app.use('/api/products', productRoutes)
+app.use("/api/messages", messageRoutes)
 
+// ── Connect to MongoDB then start server ──
+// We connect to DB FIRST, only then open the server
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log('✅ MongoDB connected')
+    app.listen(5000, () => console.log('✅ Server running on port 5000'))
+  })
+  .catch((err) => console.log('❌ Connection failed:', err))
