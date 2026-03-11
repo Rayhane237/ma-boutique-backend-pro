@@ -10,15 +10,26 @@ import messageRoutes from "./routes/messageRoutes.js"
 dotenv.config()       // loads your .env file
 const app = express() // creates your server
 
-// ── Middleware ──
-// These 2 lines run on EVERY request before it hits your routes
+// Option 2: Allow specific origins (recommended for production)
+const allowedOrigins = [
+  'https://ma-boutiqhe-frontend-pro-cilj.vercel.app/', // React dev server
+     // Your production frontend URL
+];
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://ma-boutiqhe-frontend-pro-cilj.vercel.app'  // replace with your actual frontend URL
-  ],
-  credentials: true
-}))           // allows React (port 5173) to talk to Express (port 5000) ,and my deployed frontend to talk to my deployed backend
+  origin: function (origin, callback) {
+    // allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Specify allowed methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Specify allowed headers
+  credentials: true // If you're sending cookies or authorization headers
+}));
+
 app.use(express.json())     // lets Express read JSON from request bodies
 
 // ── Routes ──
