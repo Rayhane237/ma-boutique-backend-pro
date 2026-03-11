@@ -15,7 +15,7 @@ const app = express() // creates your server
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://my-boutique.vercel.app'  // replace with your actual frontend URL
+    'https://ma-boutiqhe-frontend-pro-cilj.vercel.app'  // replace with your actual frontend URL
   ],
   credentials: true
 }))           // allows React (port 5173) to talk to Express (port 5000) ,and my deployed frontend to talk to my deployed backend
