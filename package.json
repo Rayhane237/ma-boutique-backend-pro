@@ -7,7 +7,7 @@
   "scripts": {
      
     "start": "node --env-file=.env server.js",
-    "dev": "nodemon --env-file=.env server.js",
+    "dev": "nodemon --env-file=.env server.js"
    
   },
 
