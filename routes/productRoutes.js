@@ -7,6 +7,8 @@ const router = express.Router()// creates a mini-server for products routes
 router.get("/" ,async (req,res)=>{
     try{
         const products = await Product.find()
+         console.log('Products found:', products.length)  // add this line
+        console.log('DB name:', Product.db.name)         
         res.json(products)
     }catch(error){
         res.status(500).json({message: error.message})
