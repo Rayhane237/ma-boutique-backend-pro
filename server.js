@@ -35,8 +35,8 @@ const PORT = process.env.PORT || 5000
 app.use(
   //This allows both your local dev version and your live deployed frontend.
   cors({
-    origin: 'http://localhost:5173',
-    'https://ma-boutiqhe-frontend-pro-pn7e.vercel.app'
+    origin: ['http://localhost:5173',
+    'https://ma-boutiqhe-frontend-pro-pn7e.vercel.app']
   })
 )
 
