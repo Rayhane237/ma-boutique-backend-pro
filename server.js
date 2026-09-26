@@ -33,7 +33,7 @@ app.get('/api/test', async (req, res) => {
 const PORT = process.env.PORT || 5000
 
 app.use(
-  //This allows both your local dev version and your live deployed frontend.
+  //This allows both my local dev version and my live deployed frontend.
   cors({
     origin: ['http://localhost:5173',
     'https://ma-boutiqhe-frontend-pro-pn7e.vercel.app']
